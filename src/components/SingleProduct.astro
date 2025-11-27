@@ -1,0 +1,730 @@
+---
+// ProductDetail.astro
+interface ProductImage {
+  id: string;
+  url: string;
+  alt: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  size: string;
+  material: string;
+  fabricColor: string;
+  currentPrice: number;
+  originalPrice: number;
+  inStock: boolean;
+  images: ProductImage[];
+  colorOptions: Array<{
+    name: string;
+    image: string;
+    hex?: string;
+  }>;
+  features: Array<{
+    icon: string;
+    title: string;
+    description: string;
+  }>;
+}
+
+// Example: Get product from JSON
+// import productsData from '../data/products.json';
+// const { slug } = Astro.params;
+// const product = productsData.products.find(p => p.slug === slug);
+
+// Sample product data
+const product: Product = {
+  id: "1",
+  name: "Market Umbrella Spare Canopy",
+  slug: "market-umbrella-spare-canopy",
+  size: "6ft",
+  material: "Terylast",
+  fabricColor: "Terylast Tangerine",
+  currentPrice: 51.99,
+  originalPrice: 69.99,
+  inStock: true,
+  images: [
+    {
+      id: "1",
+      url: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800&q=80",
+      alt: "Market Umbrella Canopy - Main View"
+    }
+  ],
+  colorOptions: [
+    { name: "Charcoal", image: "https://via.placeholder.com/60/4a4a4a/4a4a4a", hex: "#4a4a4a" },
+    { name: "Navy", image: "https://via.placeholder.com/60/1e3a8a/1e3a8a", hex: "#1e3a8a" },
+    { name: "Burgundy", image: "https://via.placeholder.com/60/7c2d37/7c2d37", hex: "#7c2d37" },
+    { name: "Tangerine", image: "https://via.placeholder.com/60/ea580c/ea580c", hex: "#ea580c" },
+    { name: "Red", image: "https://via.placeholder.com/60/dc2626/dc2626", hex: "#dc2626" },
+    { name: "Orange", image: "https://via.placeholder.com/60/f97316/f97316", hex: "#f97316" },
+    { name: "Yellow", image: "https://via.placeholder.com/60/eab308/eab308", hex: "#eab308" },
+    { name: "Lime", image: "https://via.placeholder.com/60/84cc16/84cc16", hex: "#84cc16" },
+    { name: "Green", image: "https://via.placeholder.com/60/22c55e/22c55e", hex: "#22c55e" },
+    { name: "Teal", image: "https://via.placeholder.com/60/14b8a6/14b8a6", hex: "#14b8a6" },
+    { name: "Sky", image: "https://via.placeholder.com/60/38bdf8/38bdf8", hex: "#38bdf8" },
+    { name: "Blue", image: "https://via.placeholder.com/60/3b82f6/3b82f6", hex: "#3b82f6" },
+    { name: "Indigo", image: "https://via.placeholder.com/60/6366f1/6366f1", hex: "#6366f1" },
+    { name: "Purple", image: "https://via.placeholder.com/60/a855f7/a855f7", hex: "#a855f7" },
+    { name: "Stars", image: "https://via.placeholder.com/60/1e293b/ffffff?text=★", hex: "#1e293b" }
+  ],
+  features: [
+    {
+      icon: "truck",
+      title: "Fast & Free Shipping",
+      description: ""
+    },
+    {
+      icon: "warranty",
+      title: "10-Year limited warranty",
+      description: ""
+    },
+    {
+      icon: "return",
+      title: "Not eligible for Free Returns",
+      description: ""
+    }
+  ]
+};
+---
+
+<section class="product-detail">
+  <div class="product-container">
+    <div class="product-layout">
+      <!-- Image Gallery -->
+      <div class="product-gallery">
+        <div class="main-image">
+          <img 
+            src={product.images[0].url} 
+            alt={product.images[0].alt}
+            class="gallery-image"
+            id="mainImage"
+          />
+        </div>
+        
+        {product.images.length > 1 && (
+          <div class="thumbnail-list">
+            {product.images.map((image, index) => (
+              <button 
+                class={`thumbnail ${index === 0 ? 'active' : ''}`}
+                data-image={image.url}
+                aria-label={`View image ${index + 1}`}
+              >
+                <img src={image.url} alt={image.alt} />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <!-- Color Options -->
+        <div class="color-selector">
+          {product.colorOptions.map((color, index) => (
+            <button 
+              class={`color-option ${index === 3 ? 'active' : ''}`}
+              style={`background-color: ${color.hex || '#ccc'}`}
+              aria-label={`Select ${color.name} color`}
+              title={color.name}
+            >
+              {color.name === "Stars" && (
+                <span class="star-pattern">★</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        <h1 class="product-title">{product.name}</h1>
+
+        <div class="product-meta">
+          <span class="meta-item">
+            <strong>Size:</strong> {product.size}
+          </span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item">
+            <strong>Material:</strong> {product.material}
+          </span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item">
+            <strong>Fabric Colour:</strong> {product.fabricColor}
+          </span>
+        </div>
+
+        <div class="product-pricing">
+          <span class="current-price">${product.currentPrice.toFixed(2)} USD</span>
+          <span class="original-price">${product.originalPrice.toFixed(2)} USD</span>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="quantity-section">
+          <label for="quantity" class="quantity-label">Quantity:</label>
+          <div class="quantity-controls">
+            <button class="qty-btn" id="decreaseQty" aria-label="Decrease quantity">−</button>
+            <input 
+              type="number" 
+              id="quantity" 
+              class="qty-input" 
+              value="1" 
+              min="1" 
+              max="99"
+              aria-label="Product quantity"
+            />
+            <button class="qty-btn" id="increaseQty" aria-label="Increase quantity">+</button>
+          </div>
+          <div class="stock-status">
+            {product.inStock ? (
+              <>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="stock-icon">
+                  <circle cx="10" cy="10" r="9" stroke="#10b981" stroke-width="2"/>
+                  <path d="M6 10L9 13L14 7" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="stock-text in-stock">In stock</span>
+              </>
+            ) : (
+              <>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="stock-icon">
+                  <circle cx="10" cy="10" r="9" stroke="#ef4444" stroke-width="2"/>
+                  <path d="M7 7L13 13M7 13L13 7" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="stock-text out-of-stock">Out of stock</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        <!-- Add to Cart Button -->
+        <button class="add-to-cart-btn" disabled={!product.inStock}>
+          Add To Cart
+        </button>
+
+        <!-- Features -->
+        <div class="product-features">
+          <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" class="feature-icon">
+              <rect x="4" y="15" width="24" height="16" rx="2" stroke="#5e5568" stroke-width="2"/>
+              <path d="M10 15V11C10 9.89543 10.8954 9 12 9H20" stroke="#5e5568" stroke-width="2" stroke-linecap="round"/>
+              <path d="M20 9L28 15" stroke="#5e5568" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="14" cy="23" r="2" fill="#5e5568"/>
+              <circle cx="22" cy="23" r="2" fill="#5e5568"/>
+            </svg>
+            <div class="feature-text">
+              <div class="feature-title">Fast & Free</div>
+              <div class="feature-subtitle">Shipping</div>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" class="feature-icon">
+              <circle cx="20" cy="20" r="12" stroke="#5e5568" stroke-width="2"/>
+              <path d="M14 20L18 24L26 16" stroke="#5e5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="feature-text">
+              <div class="feature-title">10-Year limited</div>
+              <div class="feature-subtitle">warranty</div>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" class="feature-icon">
+              <rect x="8" y="10" width="24" height="20" rx="2" stroke="#5e5568" stroke-width="2"/>
+              <path d="M16 10V14M24 10V14" stroke="#5e5568" stroke-width="2" stroke-linecap="round"/>
+              <path d="M14 18L18 22M18 18L14 22" stroke="#5e5568" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="feature-text">
+              <div class="feature-title">Not eligible for Free</div>
+              <div class="feature-subtitle">Returns</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- More Options Button (three dots) -->
+        <button class="more-options-btn" aria-label="More options">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="6" r="2" fill="currentColor"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            <circle cx="12" cy="18" r="2" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-detail {
+    background: #fff;
+    padding: 40px 20px 80px;
+  }
+
+  .product-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  /* Gallery */
+  .product-gallery {
+    position: sticky;
+    top: 20px;
+  }
+
+  .main-image {
+    background: #f3f4f6;
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .thumbnail-list {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    overflow-x: auto;
+  }
+
+  .thumbnail {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f3f4f6;
+    transition: border-color 0.2s;
+  }
+
+  .thumbnail.active {
+    border-color: #3b82f6;
+  }
+
+  .thumbnail:hover {
+    border-color: #93c5fd;
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Product Info */
+  .product-info {
+    position: relative;
+  }
+
+  .color-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .color-option {
+    width: 48px;
+    height: 48px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .color-option:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .color-option.active {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+
+  .star-pattern {
+    color: white;
+    font-size: 20px;
+  }
+
+  .product-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #3d3846;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+  }
+
+  .product-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: #5e5568;
+    font-size: 15px;
+  }
+
+  .meta-item strong {
+    font-weight: 600;
+    color: #3d3846;
+  }
+
+  .meta-divider {
+    color: #d1d5db;
+  }
+
+  .product-pricing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .current-price {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ef4444;
+  }
+
+  .original-price {
+    font-size: 24px;
+    color: #9ca3af;
+    text-decoration: line-through;
+  }
+
+  .quantity-section {
+    margin-bottom: 24px;
+  }
+
+  .quantity-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #3d3846;
+    margin-bottom: 12px;
+  }
+
+  .quantity-controls {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    margin-right: 16px;
+  }
+
+  .qty-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 20px;
+    color: #3d3846;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qty-btn:hover {
+    background: #f3f4f6;
+  }
+
+  .qty-btn:active {
+    background: #e5e7eb;
+  }
+
+  .qty-input {
+    width: 60px;
+    height: 44px;
+    border: none;
+    border-left: 1px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #3d3846;
+  }
+
+  .qty-input:focus {
+    outline: none;
+  }
+
+  /* Remove spinner arrows */
+  .qty-input::-webkit-inner-spin-button,
+  .qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .stock-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    vertical-align: middle;
+  }
+
+  .stock-icon {
+    flex-shrink: 0;
+  }
+
+  .stock-text {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .in-stock {
+    color: #10b981;
+  }
+
+  .out-of-stock {
+    color: #ef4444;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    padding: 18px 32px;
+    background: #483d54;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 32px;
+  }
+
+  .add-to-cart-btn:hover:not(:disabled) {
+    background: #3d3349;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(72, 61, 84, 0.3);
+  }
+
+  .add-to-cart-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .add-to-cart-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+  }
+
+  .product-features {
+    display: flex;
+    gap: 32px;
+    padding: 28px;
+    background: #fafafa;
+    border-radius: 12px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .feature-icon {
+    flex-shrink: 0;
+  }
+
+  .feature-text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .feature-title {
+    font-weight: 600;
+    color: #3d3846;
+  }
+
+  .feature-subtitle {
+    color: #5e5568;
+  }
+
+  .more-options-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #5e5568;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .more-options-btn:hover {
+    background: #f3f4f6;
+    color: #3d3846;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .product-layout {
+      gap: 40px;
+    }
+
+    .product-features {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-detail {
+      padding: 20px 16px 60px;
+    }
+
+    .product-layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .product-gallery {
+      position: static;
+    }
+
+    .product-title {
+      font-size: 28px;
+    }
+
+    .product-meta {
+      font-size: 14px;
+    }
+
+    .current-price {
+      font-size: 28px;
+    }
+
+    .original-price {
+      font-size: 20px;
+    }
+
+    .color-selector {
+      gap: 8px;
+    }
+
+    .color-option {
+      width: 44px;
+      height: 44px;
+    }
+
+    .add-to-cart-btn {
+      font-size: 16px;
+      padding: 16px 24px;
+    }
+
+    .product-features {
+      padding: 20px;
+    }
+
+    .feature-text {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-title {
+      font-size: 24px;
+    }
+
+    .product-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .meta-divider {
+      display: none;
+    }
+
+    .quantity-controls {
+      margin-right: 12px;
+    }
+
+    .qty-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .qty-input {
+      width: 50px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  // Quantity controls
+  const qtyInput = document.getElementById('quantity') as HTMLInputElement;
+  const decreaseBtn = document.getElementById('decreaseQty');
+  const increaseBtn = document.getElementById('increaseQty');
+
+  decreaseBtn?.addEventListener('click', () => {
+    const current = parseInt(qtyInput.value);
+    if (current > 1) {
+      qtyInput.value = (current - 1).toString();
+    }
+  });
+
+  increaseBtn?.addEventListener('click', () => {
+    const current = parseInt(qtyInput.value);
+    if (current < 99) {
+      qtyInput.value = (current + 1).toString();
+    }
+  });
+
+  // Image gallery
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  const mainImage = document.getElementById('mainImage') as HTMLImageElement;
+
+  thumbnails.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      thumbnails.forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      const imageUrl = thumb.getAttribute('data-image');
+      if (imageUrl && mainImage) {
+        mainImage.src = imageUrl;
+      }
+    });
+  });
+
+  // Color selector
+  const colorOptions = document.querySelectorAll('.color-option');
+  colorOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      colorOptions.forEach(o => o.classList.remove('active'));
+      option.classList.add('active');
+    });
+  });
+</script>
