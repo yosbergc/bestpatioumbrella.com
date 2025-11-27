@@ -8,37 +8,37 @@
           "title": "Categories",
           "links": [
             { "label": "Market Umbrellas", "href": "/collections/market-umbrellas" },
-            { "label": "Tilt Umbrellas", "href": "/tilt-umbrellas" },
-            { "label": "Cantilever Umbrellas", "href": "/cantilever-umbrellas" },
-            { "label": "LED Umbrellas", "href": "/led-umbrellas" },
-            { "label": "Beach Umbrellas", "href": "/beach-umbrellas" },
-            { "label": "Commercial Umbrellas", "href": "/commercial-umbrellas" },
-            { "label": "Shop All", "href": "/shop" }
+            { "label": "Tilt Umbrellas", "href": "/collections/market-umbrellas" },
+            { "label": "Cantilever Umbrellas", "href": "/collections/market-umbrellas" },
+            { "label": "LED Umbrellas", "href": "/collections/market-umbrellas" },
+            { "label": "Beach Umbrellas", "href": "/collections/market-umbrellas" },
+            { "label": "Commercial Umbrellas", "href": "/collections/market-umbrellas" },
+            { "label": "Shop All", "href": "/collections/market-umbrellas" }
           ]
         },
         {
           "title": "Shop by Size",
           "links": [
-            { "label": "6ft", "href": "/6ft" },
-            { "label": "8ft", "href": "/8ft" },
-            { "label": "9ft", "href": "/9ft" },
-            { "label": "10ft", "href": "/10ft" },
-            { "label": "11ft", "href": "/11ft" }
+            { "label": "6ft", "href": "/collections/market-umbrellas" },
+            { "label": "8ft", "href": "/collections/market-umbrellas" },
+            { "label": "9ft", "href": "/collections/market-umbrellas" },
+            { "label": "10ft", "href": "/collections/market-umbrellas" },
+            { "label": "11ft", "href": "/collections/market-umbrellas" }
           ]
         },
         {
           "title": "Shop by Series",
           "links": [
-            { "label": "Aluminum", "href": "/aluminum" },
-            { "label": "Fiberglass", "href": "/fiberglass" },
-            { "label": "LED", "href": "/led-series" },
-            { "label": "Wooden", "href": "/wooden" }
+            { "label": "Aluminum", "href": "/collections/market-umbrellas" },
+            { "label": "Fiberglass", "href": "/collections/market-umbrellas" },
+            { "label": "LED", "href": "/collections/market-umbrellas" },
+            { "label": "Wooden", "href": "/collections/market-umbrellas" }
           ],
           "extra": {
             "title": "Shop by Shape",
             "links": [
-              { "label": "Round", "href": "/round" },
-              { "label": "Square", "href": "/square" }
+              { "label": "Round", "href": "/collections/market-umbrellas" },
+              { "label": "Square", "href": "/collections/market-umbrellas" }
             ]
           }
         },
@@ -47,7 +47,7 @@
           "image": {
             "src": "https://images.unsplash.com/photo-1541697183324-e15d407c91cf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "alt": "Shop LED Umbrellas",
-            "href": "/led-umbrellas",
+            "href": "/collections/market-umbrellas",
             "caption": "Shop LED Umbrellas"
           }
         }
