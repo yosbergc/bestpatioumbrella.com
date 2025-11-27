@@ -7,7 +7,7 @@
         {
           "title": "Categories",
           "links": [
-            { "label": "Market Umbrellas", "href": "/market-umbrellas" },
+            { "label": "Market Umbrellas", "href": "/collections/market-umbrellas" },
             { "label": "Tilt Umbrellas", "href": "/tilt-umbrellas" },
             { "label": "Cantilever Umbrellas", "href": "/cantilever-umbrellas" },
             { "label": "LED Umbrellas", "href": "/led-umbrellas" },
