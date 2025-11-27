@@ -16,6 +16,14 @@ import menu from "../data/menu.json"
             <span class="hamburger-icon" aria-hidden="true"></span>
         </button>
         <div class="nav-list-wrapper">
+            <div class="mobile-menu-header">
+                <h2 class="mobile-menu-title">Menu</h2>
+                <button class="mobile-close-btn" aria-label="Close menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
             <ul class="nav-list" role="menubar">
                 {menu.items.map(item => (
                     <li class="nav-item" role="none">
@@ -27,9 +35,18 @@ import menu from "../data/menu.json"
                     </li>
                 ))}
             </ul>
-            <!-- Mega dropdown panels inside wrapper for mobile scroll -->
+            <!-- Mega dropdown panels -->
             {menu.items.filter(i => i.columns).map(item => (
                 <div class="mega-panel" id={`megaPanel-${item.id}`} data-panel-for={item.id} aria-hidden="true">
+                    <div class="mega-mobile-header">
+                        <button class="mega-back-btn" aria-label="Go back">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Back
+                        </button>
+                        <span class="mega-mobile-title">{item.label}</span>
+                    </div>
                     <div class="mega-inner container">
                         <div class="mega-grid">
                             {(item.columns || []).map(col => (
@@ -69,7 +86,7 @@ import menu from "../data/menu.json"
 .main-nav{position:relative;border-bottom:1px solid rgba(0,0,0,0.06);background:#fff}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
 .brand .site-name{font-size:20px;margin:0;color:#222}
-.mobile-menu-toggle{display:none;background:none;border:0;padding:8px;cursor:pointer;z-index:1000}
+.mobile-menu-toggle{display:none;background:none;border:0;padding:8px;cursor:pointer;z-index:100}
 .hamburger-icon{width:22px;height:2px;background:#333;display:block;position:relative;transition:background .3s}
 .hamburger-icon::after,.hamburger-icon::before{content:"";position:absolute;left:0;width:22px;height:2px;background:#333;transition:transform .3s,top .3s}
 .hamburger-icon::before{top:-7px}
@@ -79,8 +96,10 @@ import menu from "../data/menu.json"
 .mobile-menu-toggle[aria-expanded="true"] .hamburger-icon::before{top:0;transform:rotate(45deg)}
 .mobile-menu-toggle[aria-expanded="true"] .hamburger-icon::after{top:0;transform:rotate(-45deg)}
 .nav-list-wrapper{display:contents}
+.mobile-menu-header{display:none}
 .nav-list{display:flex;gap:24px;list-style:none;margin:0;padding:0}
 .nav-link{background:none;border:0;padding:8px 6px;color:#444;font-weight:600;cursor:pointer;text-decoration:none}
+.mega-mobile-header{display:none}
 /* Mega panel full width */
 .mega-panel{position:absolute;left:0;right:0;top:100%;width:100%;z-index:60;pointer-events:none;opacity:0;transform-origin:top;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.9,.3,1);background:#fff;box-shadow:0 12px 30px rgba(12,12,20,0.06)}
 .mega-panel[aria-hidden="false"]{pointer-events:auto;opacity:1;transform:translateY(0)}
@@ -99,37 +118,203 @@ import menu from "../data/menu.json"
 /* Animations */
 @keyframes panelShow{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .mega-panel[aria-hidden="false"] .mega-inner{animation:panelShow .28s cubic-bezier(.2,.9,.3,1)}
-/* Responsive */
+/* Add subtle backdrop on desktop when open */
+@media (min-width:901px){
+    .mega-panel::before{content:"";position:fixed;inset:0;background:rgba(15,15,20,0.04);backdrop-filter:blur(2px);z-index:-1}
+}
+/* Mobile styles */
 @media (max-width:900px){
     .main-nav{position:relative}
     .nav-inner{padding:12px;position:relative;z-index:101}
     .mobile-menu-toggle{display:block}
-    .nav-list-wrapper{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:#fff;z-index:100;overflow-y:auto;-webkit-overflow-scrolling:touch}
+    .nav-list-wrapper{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:100;overflow:hidden}
     .nav-list-wrapper.mobile-open{display:block}
-    .nav-list{display:flex;flex-direction:column;gap:0;margin:0;padding:0}
-    .nav-item{width:100%;border-top:1px solid rgba(0,0,0,0.06)}
-    .nav-link{display:block;width:100%;text-align:left;padding:14px 18px;font-size:16px}
-    .mega-panel{position:static;opacity:1;pointer-events:auto;transform:none;box-shadow:none;background:rgba(0,0,0,0.02);display:none;border-top:1px solid rgba(0,0,0,0.06)}
-    .mega-panel[aria-hidden="false"]{display:block}
-    .mega-inner{padding:16px 18px}
-    .mega-grid{grid-template-columns:1fr;gap:16px}
-    .mega-title{font-size:14px;margin-bottom:8px}
-    .mega-list li{margin:6px 0}
-    .mega-list a{font-size:15px;display:block;padding:4px 0}
-    .mega-image-link img{height:200px}
+    
+    /* Mobile menu header with close button */
+    .mobile-menu-header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:14px 20px;
+        border-bottom:1px solid rgba(0,0,0,0.06);
+        background:#fff;
+        position:sticky;
+        top:0;
+        z-index:10;
+    }
+    .mobile-menu-title{
+        font-size:18px;
+        font-weight:700;
+        color:#222;
+        margin:0;
+    }
+    .mobile-close-btn{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:none;
+        border:0;
+        padding:8px;
+        cursor:pointer;
+        color:#333;
+    }
+    
+    /* Main menu list */
+    .nav-list{
+        display:flex;
+        flex-direction:column;
+        gap:0;
+        margin:0;
+        padding:0;
+        height:calc(100% - 60px);
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+    .nav-item{
+        width:100%;
+        border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+    .nav-link{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        width:100%;
+        text-align:left;
+        padding:16px 20px;
+        font-size:16px;
+        position:relative;
+    }
+    
+    /* Add arrow for items with mega menu */
+    .nav-link[data-mega]::after{
+        content:"";
+        width:8px;
+        height:8px;
+        border-right:2px solid #666;
+        border-bottom:2px solid #666;
+        transform:rotate(-45deg);
+        margin-left:auto;
+    }
+    
+    /* Mobile back header */
+    .mega-mobile-header{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:14px 20px;
+        border-bottom:1px solid rgba(0,0,0,0.06);
+        background:#fff;
+        position:sticky;
+        top:0;
+        z-index:10;
+    }
+    .mega-back-btn{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        background:none;
+        border:0;
+        padding:4px;
+        cursor:pointer;
+        font-size:16px;
+        font-weight:600;
+        color:#333;
+    }
+    .mega-mobile-title{
+        font-size:18px;
+        font-weight:700;
+        color:#222;
+    }
+    
+    /* Mega panel as slide-in */
+    .mega-panel{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        opacity:1;
+        pointer-events:none;
+        transform:translateX(100%);
+        transition:transform .3s cubic-bezier(.2,.9,.3,1);
+        box-shadow:none;
+        background:#fff;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+    }
+    .mega-panel[aria-hidden="false"]{
+        pointer-events:auto;
+        transform:translateX(0);
+    }
+    .mega-inner{
+        padding:0;
+        flex:1;
+        width: 100%;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+    .mega-grid{
+        grid-template-columns:1fr;
+        gap:0;
+        padding:0;
+    }
+    .mega-col{
+        padding:20px 20px;
+        border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+    .mega-col:last-child{
+        border-bottom:none;
+    }
+    .mega-title{
+        font-size:15px;
+        margin-bottom:12px;
+        color:#222;
+        font-weight:700;
+    }
+    .mega-list li{
+        margin:0;
+    }
+    .mega-list a{
+        font-size:15px;
+        display:block;
+        padding:12px 0;
+        color:#5b5460;
+        border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+    .mega-list li:last-child a{
+        border-bottom:none;
+    }
+    .mega-image-link{
+        margin-top:16px;
+        border-radius:12px;
+    }
+    .mega-image-link img{
+        height:200px;
+        border-radius:12px;
+        width:100%;
+    }
+    
     /* Prevent body scroll when mobile menu is open */
     body.mobile-menu-open{overflow:hidden}
-}
-/* Add subtle backdrop on desktop when open */
-@media (min-width:901px){
-    .mega-panel::before{content:"";position:fixed;inset:0;background:rgba(15,15,20,0.04);backdrop-filter:blur(2px);z-index:-1}
 }
 </style>
 <script type="module">
 // Small client-side behaviour for mega menu and mobile toggle
 const toggleBtn = document.querySelector('.mobile-menu-toggle');
 const navListWrapper = document.querySelector('.nav-list-wrapper');
+const mobileCloseBtn = document.querySelector('.mobile-close-btn');
 const megaTriggers = document.querySelectorAll('[data-mega]');
+
+// Function to close mobile menu
+function closeMobileMenu(){
+    if(toggleBtn && navListWrapper){
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        navListWrapper.classList.remove('mobile-open');
+        document.body.classList.remove('mobile-menu-open');
+        closeAllPanels();
+    }
+}
 
 // Mobile menu toggle
 if(toggleBtn && navListWrapper){
@@ -146,6 +331,11 @@ if(toggleBtn && navListWrapper){
             closeAllPanels();
         }
     });
+}
+
+// Mobile close button
+if(mobileCloseBtn){
+    mobileCloseBtn.addEventListener('click', closeMobileMenu);
 }
 
 // Helper to close all panels
@@ -169,13 +359,25 @@ document.addEventListener('click', (e)=>{
 // Close on Escape
 document.addEventListener('keydown', (e)=>{
     if(e.key === 'Escape'){
-        closeAllPanels();
-        if(isMobile() && navListWrapper?.classList.contains('mobile-open')){
-            toggleBtn?.setAttribute('aria-expanded', 'false');
-            navListWrapper.classList.remove('mobile-open');
-            document.body.classList.remove('mobile-menu-open');
+        if(isMobile()){
+            closeMobileMenu();
+        } else {
+            closeAllPanels();
         }
     }
+});
+
+// Setup back buttons for mobile
+document.querySelectorAll('.mega-back-btn').forEach(btn => {
+    btn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const panel = btn.closest('.mega-panel');
+        if(panel){
+            panel.setAttribute('aria-hidden', 'true');
+            const trigger = document.querySelector(`[data-mega="${panel.dataset.panelFor}"]`);
+            if(trigger) trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
 });
 
 // Setup triggers for hover + click behaviour
@@ -223,14 +425,14 @@ megaTriggers.forEach(trigger => {
         const isOpen = panel.getAttribute('aria-hidden') === 'false';
         
         if(isMobile()){
-            // Mobile: toggle current, close others
+            // Mobile: slide in the panel
             closeAllPanels();
             if(!isOpen){
                 panel.setAttribute('aria-hidden', 'false');
                 trigger.setAttribute('aria-expanded', 'true');
             }
         } else {
-            // Desktop: same behavior
+            // Desktop: same behavior as before
             closeAllPanels();
             panel.setAttribute('aria-hidden', String(isOpen));
             trigger.setAttribute('aria-expanded', String(!isOpen));
@@ -241,10 +443,7 @@ megaTriggers.forEach(trigger => {
 // Close mobile menu on window resize to desktop
 window.addEventListener('resize', ()=>{
     if(!isMobile() && navListWrapper?.classList.contains('mobile-open')){
-        toggleBtn?.setAttribute('aria-expanded', 'false');
-        navListWrapper.classList.remove('mobile-open');
-        document.body.classList.remove('mobile-menu-open');
-        closeAllPanels();
+        closeMobileMenu();
     }
 });
 </script>
