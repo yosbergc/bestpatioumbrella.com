@@ -13,11 +13,6 @@ interface Product {
   originalPrice: number;
 }
 
-// Example: import your products from a JSON file
-// import productsData from './products.json';
-// const products: Product[] = productsData;
-
-// For demo purposes, here's sample data structure
 const products: Product[] = [
   {
     id: "1",
@@ -75,6 +70,7 @@ const products: Product[] = [
 
 const totalProducts = products.length;
 import Layout from "../../layouts/Layout.astro";
+import FAQ from "../../components/FAQ.astro";
 ---
 
 <Layout>
@@ -144,6 +140,7 @@ import Layout from "../../layouts/Layout.astro";
       ))}
     </div>
   </section>
+  <FAQ />
 </Layout>
 
 <style>

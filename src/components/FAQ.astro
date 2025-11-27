@@ -1,0 +1,282 @@
+---
+// FAQAccordion.astro
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+// Example: import your FAQs from a JSON file
+// import faqData from '../data/faqs.json';
+// const faqs: FAQ[] = faqData.faqs;
+
+// For demo purposes, here's sample data structure
+const faqs: FAQ[] = [
+  {
+    id: "1",
+    question: "What's the Difference Between a Market Umbrella and a Tilt Umbrella?",
+    answer: `<p><strong>Market Umbrella</strong>: A classic, straight-pole design that's perfect for creating stable shade in outdoor dining or lounging areas. Ideal for spaces where you don't need to adjust the angle of the shade.</p>
+
+<p><strong>Tilt Umbrella</strong>: Offers all the benefits of a market umbrella but with added flexibility. With an adjustable tilt mechanism, you can easily angle the canopy to block the sun as it moves throughout the day—great for spaces where the sun's position changes often.</p>
+
+<p>Both are stylish, sturdy, and made to last. It just comes down to whether you need that extra level of shade control!</p>`
+  },
+  {
+    id: "2",
+    question: "Fiberglass Ribs vs. Aluminum Ribs: What's the Difference?",
+    answer: `<p><strong>Fiberglass Ribs</strong>: These are incredibly flexible and can bend without breaking, making them ideal for windy conditions. They're lightweight yet extremely durable, perfect for umbrellas that need to withstand harsh weather.</p>
+
+<p><strong>Aluminum Ribs</strong>: Known for their strength and rigidity, aluminum ribs provide excellent support and stability. They're rust-resistant and maintain their shape well over time, making them a great choice for long-lasting performance.</p>
+
+<p>The choice depends on your climate and needs—both materials offer excellent quality and durability!</p>`
+  },
+  {
+    id: "3",
+    question: "What Does the 10-Year Limited Warranty Cover?",
+    answer: `<p>Our 10-Year Limited Warranty covers manufacturing defects in materials and workmanship for the umbrella frame, pole, and mechanical components. This includes issues like structural failures, broken ribs, or faulty tilt mechanisms that occur under normal use.</p>
+
+<p><strong>Not covered:</strong> Normal wear and tear, fabric fading due to sun exposure, damage from extreme weather events, improper installation, or lack of maintenance.</p>
+
+<p>We stand behind the quality of our products and will repair or replace defective components within the warranty period. Please keep your proof of purchase for warranty claims.</p>`
+  },
+  {
+    id: "4",
+    question: "How Fast Can I Have My Umbrella Set Up?",
+    answer: `<p>Most of our umbrellas can be set up in under 15 minutes! Here's what to expect:</p>
+
+<p><strong>Market & Tilt Umbrellas:</strong> 5-10 minutes. Simply insert the pole into your base, secure it, and open the canopy using the crank or push-up mechanism.</p>
+
+<p><strong>Cantilever Umbrellas:</strong> 10-15 minutes. Assembly involves attaching the pole to the base, connecting the canopy arm, and adjusting the angle to your preference.</p>
+
+<p>All umbrellas come with clear instructions and require no special tools. If you need help, our customer support team is always ready to assist!</p>`
+  },
+  {
+    id: "5",
+    question: "Why Should I Order From Midtown Umbrellas?",
+    answer: `<p><strong>Premium Quality:</strong> We source only the highest-grade materials and work with trusted manufacturers to ensure every umbrella meets our strict quality standards.</p>
+
+<p><strong>Expert Support:</strong> Our team has years of experience helping customers find the perfect umbrella for their space. We're here to answer questions and provide guidance.</p>
+
+<p><strong>Competitive Pricing:</strong> We offer commercial-grade quality at prices that won't break the bank, with frequent sales and promotions.</p>
+
+<p><strong>Fast Shipping:</strong> Most orders ship within 1-2 business days, so you can start enjoying your outdoor space sooner.</p>
+
+<p><strong>10-Year Warranty:</strong> We stand behind our products with industry-leading warranty coverage for your peace of mind.</p>`
+  }
+];
+---
+
+<section class="faq-section">
+  <div class="faq-container">
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+    
+    <div class="faq-list">
+      {faqs.map((faq, index) => (
+        <details class="faq-item" data-faq-id={faq.id}>
+          <summary class="faq-question">
+            <span class="question-text">{faq.question}</span>
+            <span class="faq-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="icon-horizontal" d="M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path class="icon-vertical" d="M10 4V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="faq-answer" set:html={faq.answer} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    background: #f3f4f6;
+    padding: 60px 20px;
+  }
+
+  .faq-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .faq-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #3d3846;
+    margin: 0 0 40px 0;
+    line-height: 1.2;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .faq-item {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+  }
+
+  .faq-item:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .faq-item:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom: none;
+  }
+
+  .faq-item:hover {
+    background: #fafafa;
+  }
+
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 28px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    position: relative;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3d3846;
+    padding-right: 20px;
+    line-height: 1.4;
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3d3846;
+    transition: transform 0.3s ease;
+  }
+
+  .icon-vertical {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .faq-item[open] .icon-vertical {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    padding: 0 28px 28px 28px;
+    color: #5e5568;
+    font-size: 16px;
+    line-height: 1.7;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .faq-answer :global(p) {
+    margin: 0 0 16px 0;
+  }
+
+  .faq-answer :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .faq-answer :global(strong) {
+    color: #3d3846;
+    font-weight: 600;
+  }
+
+  .faq-answer :global(ul) {
+    margin: 12px 0;
+    padding-left: 24px;
+  }
+
+  .faq-answer :global(li) {
+    margin: 8px 0;
+  }
+
+  @media (max-width: 768px) {
+    .faq-section {
+      padding: 40px 16px;
+    }
+
+    .faq-title {
+      font-size: 32px;
+      margin-bottom: 28px;
+    }
+
+    .faq-question {
+      padding: 20px 20px;
+    }
+
+    .question-text {
+      font-size: 16px;
+      padding-right: 16px;
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .faq-answer {
+      padding: 0 20px 24px 20px;
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .faq-title {
+      font-size: 28px;
+    }
+
+    .question-text {
+      font-size: 15px;
+    }
+  }
+</style>
+
+<script>
+  // Optional: Close other accordions when one opens (accordion behavior)
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    item.addEventListener('toggle', (e) => {
+      if (item.open) {
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item && otherItem.open) {
+            otherItem.open = false;
+          }
+        });
+      }
+    });
+  });
+</script>
